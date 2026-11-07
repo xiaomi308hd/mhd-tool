@@ -7,7 +7,7 @@ Uninstallable=no
 DisableWelcomePage=yes
 DisableDirPage=yes
 DisableProgramGroupPage=yes
-DisableReadyPage=no
+DisableReadyPage=yes
 DisableFinishedPage=yes
 OutputDir=output
 OutputBaseFilename=MihdTool-OneClick
@@ -22,9 +22,12 @@ Source: "XiaomiTool\*"; DestDir: "{app}"; Flags: recursesubdirs ignoreversion
 Filename: "{app}\MihdTool.exe"; WorkingDir: "{app}"; Flags: nowait
 
 [Code]
-// Tự động bấm Next/Install ở các trang đầu để không cần thao tác
-procedure CurPageChanged(CurPageID: Integer);
+// Bỏ qua mọi trang xác nhận để cài đặt chạy ngay khi mở file
+function ShouldSkipPage(PageID: Integer): Boolean;
 begin
-  if (CurPageID = wpWelcome) or (CurPageID = wpReady) then
-    WizardForm.NextButton.OnClick(WizardForm.NextButton);
+  Result := (PageID = wpWelcome) or (PageID = wpLicense) or
+            (PageID = wpInfoBefore) or (PageID = wpSelectDir) or
+            (PageID = wpSelectProgramGroup) or (PageID = wpSelectTasks) or
+            (PageID = wpReady) or (PageID = wpInfoAfter) or
+            (PageID = wpFinished);
 end;
