@@ -1,13 +1,13 @@
 [Setup]
 AppName=MihdTool
-AppVersion=1.1
+AppVersion=1.2
 DefaultDirName={localappdata}\MihdTool
 PrivilegesRequired=lowest
 Uninstallable=no
 DisableWelcomePage=yes
 DisableDirPage=yes
 DisableProgramGroupPage=yes
-DisableReadyPage=yes
+DisableReadyPage=no
 DisableFinishedPage=yes
 OutputDir=output
 OutputBaseFilename=MihdTool-OneClick
@@ -22,19 +22,15 @@ Source: "XiaomiTool\*"; DestDir: "{app}"; Flags: recursesubdirs ignoreversion
 Filename: "{app}\MihdTool.exe"; WorkingDir: "{app}"; Flags: nowait
 
 [Code]
-// Bỏ qua các trang xác nhận để cài đặt chạy ngay khi mở file
-function ShouldSkipPage(PageID: Integer): Boolean;
-begin
-  Result := (PageID = wpWelcome) or (PageID = wpLicense) or
-            (PageID = wpInfoBefore) or (PageID = wpSelectDir) or
-            (PageID = wpSelectProgramGroup) or (PageID = wpSelectTasks) or
-            (PageID = wpReady) or (PageID = wpInfoAfter) or
-            (PageID = wpFinished);
-end;
+const
+  BM_CLICK = $00F5;
 
-// Dự phòng: nếu trang Ready vẫn hiện thì tự bấm Install
+function PostMessage(hWnd: HWND; Msg: UINT; wParam: LongInt; lParam: LongInt): BOOL;
+  external 'PostMessageW@user32.dll stdcall';
+
+// Khi trang "Ready to Install" hiện ra, gửi lệnh bấm nút Install
 procedure CurPageChanged(CurPageID: Integer);
 begin
   if CurPageID = wpReady then
-    WizardForm.NextButton.OnClick(WizardForm.NextButton);
+    PostMessage(WizardForm.NextButton.Handle, BM_CLICK, 0, 0);
 end;
