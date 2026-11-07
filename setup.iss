@@ -4,9 +4,10 @@ AppVersion=1.0
 DefaultDirName={localappdata}\MihdTool
 PrivilegesRequired=lowest
 Uninstallable=no
+DisableWelcomePage=yes
 DisableDirPage=yes
 DisableProgramGroupPage=yes
-DisableReadyPage=yes
+DisableReadyPage=no
 DisableFinishedPage=yes
 OutputDir=output
 OutputBaseFilename=MihdTool-OneClick
@@ -19,3 +20,11 @@ Source: "XiaomiTool\*"; DestDir: "{app}"; Flags: recursesubdirs ignoreversion
 
 [Run]
 Filename: "{app}\MihdTool.exe"; WorkingDir: "{app}"; Flags: nowait
+
+[Code]
+// Tự động bấm Next/Install ở các trang đầu để không cần thao tác
+procedure CurPageChanged(CurPageID: Integer);
+begin
+  if (CurPageID = wpWelcome) or (CurPageID = wpReady) then
+    WizardForm.NextButton.OnClick(WizardForm.NextButton);
+end;
