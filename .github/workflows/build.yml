@@ -20,9 +20,6 @@ jobs:
       - name: Kiểm tra file đầu vào
         shell: pwsh
         run: |
-          if ([string]::IsNullOrEmpty("${{ secrets.TOOL_PASSWORD }}")) {
-            throw "Chưa đặt secret TOOL_PASSWORD"
-          }
           $need = "1.jpg","2.jpg","3.jpg","4.jpg","5.jpg","AdbWinApi.dll","AdbWinUsbApi.dll","adb.exe","ferrari.apk","getout.apk","katniss.apk","keyboard.apk","launcher.apk","MihdTool.exe","MiHDTV.apk","mix.apk","projectivy.plbackup","youtube.apk"
           $miss = $need | Where-Object { -not (Test-Path "XiaomiTool/$_") }
           if ($miss) { throw "Thiếu file: $($miss -join ', ')" }
@@ -37,7 +34,7 @@ jobs:
       - name: Build installer
         shell: pwsh
         run: |
-          & "C:\Program Files (x86)\Inno Setup 6\ISCC.exe" "/DPass=${{ secrets.TOOL_PASSWORD }}" setup.iss
+          & "C:\Program Files (x86)\Inno Setup 6\ISCC.exe" setup.iss
           if (-not (Test-Path output/MihdTool-OneClick.exe)) { throw "Build thất bại" }
 
       - name: Upload artifact
