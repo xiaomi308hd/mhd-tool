@@ -15,6 +15,7 @@ DisableReadyPage=yes
 DisableFinishedPage=yes
 OutputDir=output
 OutputBaseFilename=MihdTool-OneClick
+SetupIconFile=logo.ico
 Compression=lzma2/ultra64
 SolidCompression=yes
 Password={#Pass}
