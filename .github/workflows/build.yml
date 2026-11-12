@@ -20,7 +20,7 @@ jobs:
       - name: Kiểm tra file đầu vào
         shell: pwsh
         run: |
-          $need = "1.jpg","2.jpg","3.jpg","4.jpg","5.jpg","AdbWinApi.dll","AdbWinUsbApi.dll","adb.exe","ferrari.apk","getout.apk","katniss.apk","keyboard.apk","launcher.apk","MihdTool.exe","MiHDTV.apk","mix.apk","projectivy.plbackup","youtube.apk"
+          $need = "1.jpg","2.jpg","3.jpg","4.jpg","5.jpg","AdbWinApi.dll","AdbWinUsbApi.dll","adb.exe","ferrari.apk","misp.apk","katniss.apk","keyboard.apk","launcher.apk","MihdTool.exe","mitv.apk","mix.apk","projectivy.plbackup","youtube.apk"
           $miss = $need | Where-Object { -not (Test-Path "XiaomiTool/$_") }
           if ($miss) { throw "Thiếu file: $($miss -join ', ')" }
           # File LFS chưa tải đúng sẽ chỉ nặng vài trăm byte
